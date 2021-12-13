@@ -4,11 +4,13 @@ from neopixel import NeoPixel
 import json
 import time
 import network
+import urequests
 
 
 # Prieeiga prie ID ir slaptazodziu:
 with open('secret.json') as f:
     config = json.load(f)
+
 
 # Prisijungimas prie wifi
 wifi = network.WLAN(network.STA_IF)
@@ -20,22 +22,29 @@ while not wifi.isconnected():
     time.sleep(1)
 
 print("Prisijungta sekmingai")
+print(wifi.ifconfig())
 
 
-
-pin = Pin(27, Pin.OUT)  # set GPIO0 to output to drive NeoPixels
-np = NeoPixel(pin, 2)  # create NeoPixel driver on GPIO0 for 8 pixels
+# Nurodymai neopixeliui:
+pin = Pin(27, Pin.OUT)      # 27 jungtis(GPIO0) atitinka T7 jungti ant mikroschemos
+np = NeoPixel(pin, 1)        # nurodoma, kuri jungtis ir kiek Neopixeliu prijungta
 
 
 while True:
-    np[0] = (100, 0, 0)
-    NeoPixel.fill(np[0], 2)
-    time.sleep(1)
-    np[1] = (100, 100, 0)
-    time.sleep(1)
-    np[0] = (100, 0, 100)
-    time.sleep(1)
-    np[1] = (0, 100, 0)
-    time.sleep(1)
+    # RGB spalvos gavimas is serverio:
+    uzklausos_atsakymas = urequests.get("http://192.168.1.124:5000/spalva")
+    print(f"Užklausos statusas: {uzklausos_atsakymas.status_code}")
+    r_g_b = uzklausos_atsakymas.json()
+    print(r_g_b)
+    r = r_g_b["r"]
+    g = r_g_b["g"]
+    b = r_g_b["b"]
 
-    print("puikiai veikia")
+    np[0] = (r, g, b) 
+    np.write()    
+
+    time.sleep(5)        
+    
+
+
+

@@ -11,22 +11,49 @@ body {
     background-attachment: fixed;  
     background-size: 100% 100%;
 }
+
+.b-example-divider {
+  height: 3rem;
+  background-color: rgba(0, 0, 0, .1);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+@media (min-width: 992px) {
+  .rounded-lg-3 { border-radius: .3rem; }
+}
+
 </style>
 </head> 
  
 <body> 
-	<h1>Kaledinio žaisliuko projektas</h1>
-	<p>Išsirink spalvą kuria nušvis kalėdinė žvaigždė</p>
 
-    <form action="/spalva" method="post" >
+    <div class="b-example-divider"></div>
 
-        <button type="submit" class="btn btn-success" value="Žalia" name="spalva">Žalia</button>
-        <button type="submit" class="btn btn-danger" value="Raudona" name="spalva">Raudonas</button>
-        <button type="submit" class="btn btn-warning" value="Geltona" name="spalva">Geltona</button>
-        <button type="submit" class="btn btn-primary" value="Mėlyna" name="spalva">Mėlyna</button>
-        <button type="submit" class="btn btn-light" value="Balta" name="spalva">Balta</button>
-    </form>
+    <div class="container col-xxl-8 px-4 py-5">
+      <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+          <img src="nuoroda" class="d-block mx-lg-auto img-fluid" alt="Paveikslas" width="700" height="200" loading="lazy">
+        </div>
+        <div class="col-lg-6">
+          <h1 class="display-5 fw-bold lh-1 mb-3">Kaledinio žaisliuko projektas</h1>
+          <p class="lead">Išsirink spalvą kuria nušvis kalėdinė žvaigždė</p>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <form action="/spalva" method="post" >
+                <button type="submit" class="btn btn-success" value="Žalia" name="spalva">Žalia</button>
+                <button type="submit" class="btn btn-danger" value="Raudona" name="spalva">Raudonas</button>
+                <button type="submit" class="btn btn-warning" value="Geltona" name="spalva">Geltona</button>
+                <button type="submit" class="btn btn-primary" value="Mėlyna" name="spalva">Mėlyna</button>
+                <button type="submit" class="btn btn-light" value="Balta" name="spalva">Balta</button>
+                <button type="submit" class="btn btn-dark" value="Išjungimas" name="spalva">Išjungimas</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="b-example-divider"></div>
 
 </body> 
 </html> 
