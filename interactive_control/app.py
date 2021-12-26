@@ -9,7 +9,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///spalvos.db"
 app.config["SQLALCHEMY_BINDS"] = {"spalvos_mikroschemai": "sqlite:///spalvos_mikroschemai.db"}
 db = SQLAlchemy(app)
 
-
+# Pirma duomenu baze su spalvomis
 class Spalvynas(db.Model):
     __tablename__ = "Spalvynas"
     id = db.Column(db.Integer, primary_key=True)
@@ -27,7 +27,7 @@ class Spalvynas(db.Model):
     def __repr__(self):
         return f"{self.id}. {self.spalva}: ({self.r}, {self.g}, {self.b})"
 
-
+# Antra duomenu baze su pasirinkta spalva
 class Spalvos_mikroschemai(db.Model):
     __bind_key__ = "spalvos_mikroschemai"
     __tablename__ = "Spalvos mikroschemai"
@@ -47,19 +47,21 @@ class Spalvos_mikroschemai(db.Model):
 
 @app.route("/")
 def home():
-    return render_template("box2.html")
+    return render_template("web.html")
 
 
 @app.route("/spalva", methods=["POST", "GET"])
 def spalva():
     if request.method == "POST":
-        pasirinkta_spalva = request.form["spalva"]  # gavau reiksme, kuria grazina paspaudus mygtuka
+        # gaunama spalvos reiksme:
+        pasirinkta_spalva = request.form["spalva"] 
         grazintas_rgb = Spalvynas.query.filter_by(spalva=pasirinkta_spalva).one()
         print(grazintas_rgb)
         r = grazintas_rgb.r
         g = grazintas_rgb.g
         b = grazintas_rgb.b
         print(r, g, b)
+        # is antros duomenu bazes istrinami ir pridedami nauji duomenys:
         seni_rgb = Spalvos_mikroschemai.query.all()
         for eilute in seni_rgb:
             db.session.delete(eilute)
@@ -68,6 +70,7 @@ def spalva():
         db.session.commit()
         return redirect(url_for("home"))
     elif request.method == "GET":
+        # issiunciami duomenys mikroschemai uzklausus:
         siunciama_spalva = Spalvos_mikroschemai.query.one()
         return {"r" : siunciama_spalva.r, "g" : siunciama_spalva.g, "b" : siunciama_spalva.b }
 
